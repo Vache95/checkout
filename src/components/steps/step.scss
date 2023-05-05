@@ -1,0 +1,47 @@
+.step {
+  h1 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 46px;
+    color: var(--color-text-blackLight);
+    margin-bottom: 10px;
+  }
+  .step__arrow {
+    display: flex;
+    align-items: center;
+    img {
+      margin: 0px 12px 0px 8px;
+    }
+    span {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 12px;
+      color: var(--color-texts);
+    }
+    .path {
+      color: var(--color-active);
+    }
+  }
+}
+@media (max-width: 744px) {
+  .step {
+    .step__arrow {
+      span {
+        font-weight: 600;
+      }
+    }
+  }
+}
+@media (max-width: 374px) {
+  .step {
+    h1 {
+      font-size: 30px;
+      line-height: 40px;
+    }
+    .step__arrow {
+      span {
+        font-weight: 400;
+      }
+    }
+  }
+}

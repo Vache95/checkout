@@ -1,0 +1,118 @@
+.express {
+  padding: 30px;
+  border: 1px solid var(--color-border-transparentItem);
+  border-radius: 16px;
+  margin-top: 20px;
+}
+.express__text {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 30px;
+  color: var(--color-text-blackLight);
+  margin-bottom: 20px;
+}
+.express__bottom,
+.express__bottom-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.express__bottom :not(:last-child),
+.express__bottom-mobile :not(:last-child) {
+  margin-right: 16px;
+}
+
+.express__button-shop,
+.express__button-paypal,
+.express__button-pay {
+  min-width: 181px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.express__button-shop {
+  background-color: var(--color-button-shop);
+}
+.express__button-paypal {
+  background-color: var(--color-button-paypal);
+}
+.express__button-pay {
+  background-color: var(--color-button-pay);
+}
+@media (max-width: 1110px) {
+  .express__bottom :not(:last-child) {
+    margin-right: 16px;
+  }
+}
+@media (max-width: 1093px) {
+  .express__bottom :not(:last-child),
+  .express__bottom-mobile :not(:last-child) {
+    margin-right: 12px;
+  }
+
+  .express__button-shop,
+  .express__button-paypal,
+  .express__button-pay {
+    min-width: 150px;
+  }
+}
+@media (max-width: 992px) {
+  .information__rigthside {
+    display: none;
+  }
+  .express__bottom,
+  .express__bottom-mobile {
+    justify-content: inherit;
+  }
+  .express__button-shop,
+  .express__button-paypal,
+  .express__button-pay {
+    width: 181px;
+  }
+}
+@media (max-width: 744px) {
+  .express {
+    margin-top: 30px;
+  }
+}
+@media (max-width: 655px) {
+  .express__button-shop,
+  .express__button-paypal,
+  .express__button-pay {
+    max-width: 130px;
+  }
+}
+@media (max-width: 560px) {
+  .express__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 12px;
+  }
+}
+@media (max-width: 374px) {
+  .express {
+    padding: 16px 16px 20px;
+  }
+  .express__button-shop,
+  .express__button-paypal,
+  .express__button-pay {
+    max-width: 130px;
+  }
+  .express__bottom :not(:last-child) {
+    margin-right: 12px;
+  }
+}
+@media (max-width: 368px) {
+  .express__bottom-mobile {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .express__bottom-mobile :not(:last-child) {
+    margin-bottom: 20px;
+  }
+  .express__bottom :not(:last-child) {
+    margin-right: 5px;
+  }
+}

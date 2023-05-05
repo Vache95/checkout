@@ -1,0 +1,38 @@
+.header {
+  background-color: var(--color-header-bg);
+  width: 100%;
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    cursor: pointer;
+  }
+}
+@media (max-width: 744px) {
+  .header {
+    min-height: 58px;
+  }
+  .header__container {
+    max-width: 694px;
+    width: 100%;
+    img {
+      width: 133px;
+      height: 28px;
+    }
+  }
+}
+
+@media (max-width: 374px) {
+  .header {
+    min-height: 44px;
+  }
+  .header__container {
+    max-width: 373px;
+    width: 100%;
+    img {
+      width: 95px;
+      height: 20px;
+    }
+  }
+}

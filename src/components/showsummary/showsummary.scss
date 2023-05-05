@@ -1,0 +1,150 @@
+.show {
+  width: 100%;
+  height: 74px;
+  margin-top: 40px;
+  border: 1px solid #d6d8ee;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+}
+.show__left {
+  display: flex;
+  align-items: center;
+  span {
+    padding: 0px 25px 0px 15px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
+    color: #4b4e68;
+  }
+  img {
+    cursor: pointer;
+  }
+}
+.show__rigth {
+  span {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: right;
+    color: #000034;
+  }
+}
+.show__option {
+  width: 100%;
+  margin-top: 12px;
+}
+.show__option--mod {
+  width: 100%;
+  margin-top: 12px;
+  .lifetime {
+    display: none;
+  }
+  .cart {
+    padding: 38px 30px 30px;
+    .cart__top__bottom-discount {
+      input {
+        max-width: 420px;
+        width: 100%;
+      }
+      button {
+        max-width: 164px;
+        width: 100%;
+      }
+    }
+  }
+  .subcart {
+    .subcart__bottom,
+    .subcart__top {
+      p {
+        max-width: 100%;
+        width: 100%;
+        font-size: 16px;
+      }
+    }
+  }
+}
+@media (max-width: 410px) {
+  .show {
+    padding: 16px;
+  }
+  .show__left {
+    span {
+      padding: 0px 25px 0px 12px;
+      font-size: 14px;
+      line-height: 24px;
+    }
+    img {
+      cursor: pointer;
+    }
+  }
+  .show__rigth {
+    span {
+      font-size: 14px;
+      line-height: 24px;
+    }
+  }
+}
+@media (max-width: 374px) {
+  .show__option--mod {
+    .lifetime {
+      display: block !important;
+      margin-top: 20px;
+      padding: 16px 16px 20px;
+      .lifetime__left {
+        margin-bottom: 20px;
+        p {
+          margin-bottom: 0px;
+        }
+      }
+      .lifetime__rigth {
+        button {
+          width: 150px;
+          height: 42px;
+          white-space: nowrap;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+
+    .cart {
+      height: 440px;
+      padding: 28px 16px 20px;
+      .cart__top__bottom-discount {
+        input {
+          max-width: 189px;
+          width: 100%;
+          height: 46px;
+          &::placeholder {
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 20px;
+          }
+        }
+        button {
+          max-width: 110px;
+          width: 100%;
+          height: 46px;
+        }
+        .discount {
+          p {
+            margin-bottom: 10px;
+          }
+        }
+      }
+      .cart__top {
+        height: 170px;
+      }
+      .cart__top-item {
+        margin-bottom: 30px;
+      }
+    }
+    .subcart {
+      padding: 16px;
+    }
+  }
+}
