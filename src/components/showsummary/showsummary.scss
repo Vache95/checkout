@@ -17,7 +17,7 @@
     font-weight: 500;
     font-size: 16px;
     line-height: 26px;
-    color: #4b4e68;
+    color:  var( --color-texts);
   }
   img {
     cursor: pointer;
@@ -29,7 +29,7 @@
     font-size: 16px;
     line-height: 26px;
     text-align: right;
-    color: #000034;
+    color: var(--color-text-blackLight);
   }
 }
 .show__option {

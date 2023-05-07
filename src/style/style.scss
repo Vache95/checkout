@@ -1,6 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-@import "bootstrap/dist/css/bootstrap.min.css";
-@import "_variables.scss";
+@import '_mixin.scss';
+@import '_variables.scss';
+@import 'scroll.scss';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 * {
   padding: 0;
@@ -111,7 +113,7 @@ h6 {
   font-weight: 400;
 }
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .wrapper {
@@ -125,7 +127,7 @@ body {
   background-color: var(--color-white);
 }
 
-[class*="__container"] {
+[class*='__container'] {
   width: 100%;
   max-width: 1140px;
   padding: 0px 15px;
@@ -134,4 +136,9 @@ body {
 
 .main {
   flex: 1 1 100%;
+}
+@mixin shortFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

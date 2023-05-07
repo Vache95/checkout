@@ -1,21 +1,22 @@
-import { FC } from "react";
+import { FC } from 'react';
 
-import Carousel from "react-bootstrap/Carousel";
+import Carousel from 'react-bootstrap/Carousel';
 
-import Slide from "assets/slider/Rectangle 4160.png";
+import { SliderData } from './config';
 
-import "./slider.scss";
+import Slide from 'assets/slider/Rectangle 4160.png';
+
+import './slider.scss';
 
 const Slider: FC = (): JSX.Element => {
   return (
     <div className="slider">
       <Carousel>
-        <Carousel.Item>
-          <img src={Slide} alt="slide" />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img src={Slide} alt="slide" />
-        </Carousel.Item>
+        {SliderData(Slide).map(({ id, images }) => (
+          <Carousel.Item key={id}>
+            <img src={images} alt="slide" />
+          </Carousel.Item>
+        ))}
       </Carousel>
     </div>
   );

@@ -49,8 +49,7 @@
 .card__content-date {
   margin-right: 20px;
 }
-.card__content-code {
-}
+
 .card__content-number,
 .card__content-name {
   margin-bottom: 20px;
@@ -66,10 +65,7 @@
     left: 20px;
   }
 }
-.card__content-number {
-}
-.card__content-name {
-}
+
 @media (max-width: 550px) {
   .card__content-datecode {
     flex-direction: column;
