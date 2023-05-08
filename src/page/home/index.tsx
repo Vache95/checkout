@@ -1,14 +1,23 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-import Buttons from 'components/formElements/button';
+import Buttons from "components/formElements/button";
 
-import Slider from 'components/slider/Slider';
-import Support from 'components/support';
-import PriceCalculation from 'components/priceCaluculation';
+import { selectProducts } from "store/selectors";
+import { useAppSelector } from "hook/useSelector";
+import { useNavigate } from "react-router-dom";
 
-import './upsell.scss';
+import Slider from "components/slider/Slider";
+import Support from "components/support";
+import PriceCalculation from "components/priceCaluculation";
+
+import "./upsell.scss";
 
 const Home: FC = (): JSX.Element => {
+  const navigate = useNavigate();
+  const { cart } = useAppSelector(selectProducts);
+
+  const pageInformation = (): void => navigate("checkout/information");
+
   return (
     <div className="home">
       <div className="home__container">
@@ -21,23 +30,21 @@ const Home: FC = (): JSX.Element => {
           </div>
           <div className="content__text">
             <p className="content__text-1">
-              Quis tincidunt nunc suscipit egestas. Viverra erat cras ullamcorper amet. Risus velit
-              tempus at eu. Eu facilisi tempor ipsum orci placerat urna pretium adipiscing
-              dignissim.
+              Quis tincidunt nunc suscipit egestas. Viverra erat cras ullamcorper amet. Risus velit tempus at eu. Eu facilisi
+              tempor ipsum orci placerat urna pretium adipiscing dignissim.
             </p>
             <p className="content__text-2">
-              Risus dolor fringilla diam nulla iaculis. Odio nunc nulla malesuada sed vulputate nisl
-              metus sem. Elit pulvinar in auctor ac vitae morbi et. Nulla malesuada consequat arcu
-              semper cras pharetra fermentum. Nisl eu arcu libero etiam diam. Scelerisque cum
-              pharetra amet nulla sed nulla mauris tortor. Magna elementum montes eget ullamcorper
-              id diam dui pellentesque. Eget mi in tempor amet vitae.
+              Risus dolor fringilla diam nulla iaculis. Odio nunc nulla malesuada sed vulputate nisl metus sem. Elit pulvinar in
+              auctor ac vitae morbi et. Nulla malesuada consequat arcu semper cras pharetra fermentum. Nisl eu arcu libero etiam
+              diam. Scelerisque cum pharetra amet nulla sed nulla mauris tortor. Magna elementum montes eget ullamcorper id diam
+              dui pellentesque. Eget mi in tempor amet vitae.
             </p>
           </div>
           <div className="content__support">
             <Support />
           </div>
           <div className="content__buttons">
-            <Buttons type="button" imgs name="Yes, I want" />
+            <Buttons type="button" imgs name="Yes, I want" cart={cart.length} OnClick={pageInformation} />
           </div>
         </div>
       </div>

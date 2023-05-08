@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { emailPattern, namePattern } from "utils/validation";
+import { emailPattern, namePattern, phonePattern } from "utils/validation";
 import { InputNumber } from "helper/input";
 
 import Email from "assets/svg/Vector.svg";
@@ -18,6 +18,8 @@ import Org from "assets/svg/Vector (3).svg";
 import Arrow from "assets/svg/Vector (4).svg";
 
 import "./form.scss";
+import { useAppDispatch } from "hook/useDispatch";
+import { addInformationData } from "store/slices/products/productsSlices";
 
 interface FormData {
   email: string;
@@ -36,13 +38,18 @@ const Forms: FC = (): JSX.Element => {
   const [values, setValues] = useState<string>("");
   const navigate = useNavigate();
 
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = (data: FormData) => navigate("/checkout/payment");
+  const onSubmit = (data: FormData) => {
+    dispatch(addInformationData(data));
+    navigate("/checkout/payment");
+  };
 
   return (
     <div className="form">
@@ -68,22 +75,24 @@ const Forms: FC = (): JSX.Element => {
               placeholder="Phone Number"
               onInput={(e: React.FormEvent<HTMLInputElement>) => InputNumber(e, setValues)}
               value={values}
-              {...register("phone", { required: true })}
+              {...register("phone", { required: true, pattern: phonePattern })}
             />
-            {errors?.phone && <p className="error__text">Enter a valid email address</p>}
+            {errors?.phone && <p className="error__text">Enter a valid phone address</p>}
           </div>
         </div>
         <div className="details">
           <h3>Shipping Details</h3>
           <div className={errors?.country ? "details__country error" : "details__country"}>
             <img src={Vector} alt="vector" />
-            <Form.Select aria-label="Default select example" {...register("country", { required: true })}>
-              <option>Select a Country</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <Form.Select {...register("country", { required: true })}>
+              <option value="" disabled selected>
+                Select a Country
+              </option>
+              <option value="Armenia">Armenia</option>
+              <option value="Russia">Russia</option>
+              <option value="France">France</option>
             </Form.Select>
-            {errors?.country && <p className="error__text">Enter a valid email address</p>}
+            {errors?.country && <p className="error__text">Enter a valid country address</p>}
           </div>
           <div className="firstlast">
             <div className={errors?.firstName ? "firstname error" : "firstname"}>
@@ -93,7 +102,7 @@ const Forms: FC = (): JSX.Element => {
                 placeholder="First Name"
                 {...register("firstName", { required: true, pattern: namePattern })}
               />
-              {errors?.firstName && <p className="error__text">Enter a valid email address</p>}
+              {errors?.firstName && <p className="error__text">Enter a valid first name address</p>}
             </div>
             <div className={errors?.lastName ? "lastname error" : "lastname"}>
               <img src={User} alt="user" />
@@ -102,13 +111,13 @@ const Forms: FC = (): JSX.Element => {
                 placeholder="Last Name"
                 {...register("lastName", { required: true, pattern: namePattern })}
               />
-              {errors?.lastName && <p className="error__text">Enter a valid email address</p>}
+              {errors?.lastName && <p className="error__text">Enter a valid last name address</p>}
             </div>
           </div>
           <div className={errors?.address ? "address error" : "address"}>
             <img src={Address} alt="address" />
             <Form.Control type="text" placeholder="Address" {...register("address", { required: true })} />
-            {errors?.address && <p className="error__text">Enter a valid email address</p>}
+            {errors?.address && <p className="error__text">Enter a valid address address</p>}
           </div>
           <div className={errors?.apartment ? "appartament error" : "appartament"}>
             <img src={Org} alt="org" />
@@ -117,21 +126,23 @@ const Forms: FC = (): JSX.Element => {
               placeholder="Aparment, suit, etc (Optional)"
               {...register("apartment", { required: true })}
             />
-            {errors?.apartment && <p className="error__text">Enter a valid email address</p>}
+            {errors?.apartment && <p className="error__text">Enter a valid appartament address</p>}
           </div>
           <div className="citycode">
             <div className={errors?.city ? "city error" : "city"}>
-              <Form.Select aria-label="Default select example" {...register("city", { required: true })}>
-                <option>City</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+              <Form.Select {...register("city", { required: true })}>
+                <option value="" disabled selected>
+                  City
+                </option>
+                <option value="Erevan">Erevan</option>
+                <option value="Moscov">Moscov</option>
+                <option value="Pharis">Pharis</option>
               </Form.Select>
-              {errors?.city && <p className="error__text">Enter a valid email address</p>}
+              {errors?.city && <p className="error__text">Enter a valid city address</p>}
             </div>
             <div className={errors?.code ? "code error" : "code"}>
               <Form.Control type="password" placeholder="Post code" {...register("code", { required: true })} />
-              {errors?.code && <p className="error__text">Enter a valid email address</p>}
+              {errors?.code && <p className="error__text">Enter a valid code address</p>}
             </div>
           </div>
         </div>

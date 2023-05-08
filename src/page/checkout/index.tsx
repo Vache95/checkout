@@ -1,15 +1,15 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from "react-router-dom";
 
-import Cart from 'components/cart';
-import Express from 'components/express';
-import LifeTime from 'components/lifeTime';
-import ShowSummary from 'components/showsummary';
-import Step from 'components/steps';
-import UserCart from 'components/userCart';
+import Cart from "components/cart";
+import Express from "components/express";
+import LifeTime from "components/lifeTime";
+import ShowSummary from "components/showsummary";
+import Step from "components/steps";
+import UserCart from "components/userCart";
 
-import './checkout.scss';
+import "./checkout.scss";
 
 const Checkout: FC = (): JSX.Element => {
   const { pathname } = useLocation();
@@ -22,7 +22,7 @@ const Checkout: FC = (): JSX.Element => {
           <ShowSummary />
           <LifeTime />
           <Express />
-          {pathname === '/payment' && <UserCart />}
+          {pathname === "/checkout/payment" && <UserCart />}
           <Outlet />
         </div>
         <div className="information__rigthside">

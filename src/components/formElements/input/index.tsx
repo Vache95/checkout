@@ -12,7 +12,6 @@ type InputProps = {
 };
 
 const Input: FC<InputProps> = ({ type, placeholder, register, name, errors }): JSX.Element => {
-  console.log(errors, "errors.name");
 
   return (
     <>

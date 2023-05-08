@@ -9,6 +9,9 @@ import { cartItem } from "./config";
 import Clab from "./Clab";
 import SubCart from "./SubCart";
 
+import { selectProducts } from "store/selectors";
+import { useAppSelector } from "hook/useSelector";
+
 import Item1 from "assets/cart/Rectangle 4159.jpg";
 import Item2 from "assets/cart/Rectangle 4160.jpg";
 
@@ -16,25 +19,42 @@ import "./cart.scss";
 
 const Cart: FC = (): JSX.Element => {
   const { pathname } = useLocation();
-
+  const { cart, products } = useAppSelector(selectProducts);
+  console.log(cart, "cart");
+  console.log(products, "products");
   return (
     <>
-      <div className="cart" style={{ height: `${pathname === "/thankyou" ? "404px" : ""}`}}>
+      <div className="cart" style={{ height: `${pathname === "/thankyou" ? "404px" : ""}` }}>
         <div className="cart__top">
-          {cartItem(Item1, Item2).map(({ id, images, name, price }) => (
-            <div className="cart__top-item" key={id}>
-              <div className="cart__top-item-img">
-                <span>1</span>
-                <img src={images} alt="item1" />
-              </div>
-              <div className="cart__top-item-name">
-                <p>{name}</p>
-              </div>
-              <div className="cart__top-item-price">
-                <p>{price}</p>
-              </div>
-            </div>
-          ))}
+          {cart.length
+            ? cart.map(({ id, name, count, price }) => (
+                <div className="cart__top-item" key={id}>
+                  <div className="cart__top-item-img">
+                    <span>{count}</span>
+                    <img src="" alt="item1" />
+                  </div>
+                  <div className="cart__top-item-name">
+                    <p>{name}</p>
+                  </div>
+                  <div className="cart__top-item-price">
+                    <p>{price}</p>
+                  </div>
+                </div>
+              ))
+            : cartItem(Item1, Item2).map(({ id, images, name, price }) => (
+                <div className="cart__top-item" key={id}>
+                  <div className="cart__top-item-img">
+                    <span>1</span>
+                    <img src={images} alt="item1" />
+                  </div>
+                  <div className="cart__top-item-name">
+                    <p>{name}</p>
+                  </div>
+                  <div className="cart__top-item-price">
+                    <p>{price}</p>
+                  </div>
+                </div>
+              ))}
         </div>
         <div className="cart__top__bottom">
           {pathname !== "/thankyou" && (
