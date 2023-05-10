@@ -6,6 +6,7 @@ import ShowSummary from "components/showsummary";
 import UserInfo from "./UserInfo";
 
 import Thank from "assets/thankyou/Group 1000004527.png";
+import { HOME } from "constant";
 
 import "./thankyou.scss";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 const ThankYou: FC = (): JSX.Element => {
   const navigate = useNavigate();
 
-  const back = (): void => navigate("/");
+  const back = (): void => navigate(HOME);
 
   return (
     <div className="thank">

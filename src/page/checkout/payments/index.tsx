@@ -1,8 +1,11 @@
 import { FC, FormEvent, useState } from "react";
+
 import Form from "react-bootstrap/Form";
 import { useForm } from "react-hook-form";
 import Buttons from "components/formElements/button";
 import CreditCard from "components/creditCard";
+import { THANK_YOU } from "constant";
+
 import Vector from "assets/svg/Vector (1).svg";
 import Phone from "assets/svg/fi-rr-phone-call.svg";
 import User from "assets/svg/fi-rr-user.svg";
@@ -11,6 +14,8 @@ import Org from "assets/svg/Vector (3).svg";
 import Input from "components/formElements/input";
 
 import "./payments.scss";
+import { useNavigate } from "react-router-dom";
+import { countries } from "config/config";
 
 interface FormData {
   chekbox: boolean;
@@ -32,13 +37,14 @@ interface FormData {
 
 const Payments: FC = (): JSX.Element => {
   const [option, setOption] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  const onSubmit = (data: FormData) => console.log(data);
+
+  const onSubmit = (data: FormData) => navigate(`/${THANK_YOU}`);
 
   const openOption = (e: FormEvent<HTMLInputElement>): void => {
     const target = e.target as HTMLInputElement;
@@ -80,18 +86,25 @@ const Payments: FC = (): JSX.Element => {
           <>
             <div className={option ? "payments-billing-bottomaddress bottomaddress--mod" : "payments-billing-bottomaddress"}>
               <input {...register("radiobottom")} type="radio" name="1" id="bottom" onClick={openOption} />
-              <label>Same as shipping address</label>
+              <label>Use a different billing address</label>
             </div>
             <div className={option ? "bottomaddress__option option--mod" : "bottomaddress__option"}>
               <div className="bottomaddress__option-country">
                 <img src={Vector} alt="vector" />
-                <Form.Select aria-label="Default select example" {...register("country")}>
-                  <option>Select a Country</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                <Form.Select {...register("country")}>
+                  <option value="" disabled selected>
+                    Select a Country
+                  </option>
+                  {countries.map(({ label }, i) => (
+                    <>
+                      <option key={i} value={label}>
+                        {/* <img src={`https://flagcdn.com/w20/${code?.toLowerCase()}.png`} width={20} height={16} alt="flag" /> */}
+                        {label}
+                      </option>
+                    </>
+                  ))}
                 </Form.Select>
-                {/* {errors?.country && <p className="error__text">Enter a valid email address</p>} */}
+                {errors?.country && <p className="error__text">Enter a valid country address</p>}
               </div>
               <div className="bottomaddress__option-firstlast">
                 <div className="bottomaddress__option-firstname">
@@ -113,7 +126,7 @@ const Payments: FC = (): JSX.Element => {
               </div>
               <div className="bottomaddress__option-citycode">
                 <div className="bottomaddress__option-city">
-                  <Form.Select aria-label="Default select example" {...register("city", { required: true })}>
+                  <Form.Select aria-label="Default select example" {...register("city")}>
                     <option>City</option>
                     <option value="1">One</option>
                     <option value="2">Two</option>

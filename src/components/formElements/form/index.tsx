@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, FormEvent } from "react";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import { emailPattern, namePattern, phonePattern } from "utils/validation";
 import { InputNumber } from "helper/input";
+import { CHECKOUT, PAYMENT } from "constant";
 
 import Email from "assets/svg/Vector.svg";
 import Phone from "assets/svg/fi-rr-phone-call.svg";
@@ -20,6 +21,7 @@ import Arrow from "assets/svg/Vector (4).svg";
 import "./form.scss";
 import { useAppDispatch } from "hook/useDispatch";
 import { addInformationData } from "store/slices/products/productsSlices";
+import { countries } from "config/config";
 
 interface FormData {
   email: string;
@@ -48,8 +50,9 @@ const Forms: FC = (): JSX.Element => {
 
   const onSubmit = (data: FormData) => {
     dispatch(addInformationData(data));
-    navigate("/checkout/payment");
+    navigate(`/${CHECKOUT}/${PAYMENT}`);
   };
+  const phoneNumber = (e: FormEvent<HTMLInputElement>): void => setValues(InputNumber(e));
 
   return (
     <div className="form">
@@ -73,7 +76,7 @@ const Forms: FC = (): JSX.Element => {
             <Form.Control
               type="phone"
               placeholder="Phone Number"
-              onInput={(e: React.FormEvent<HTMLInputElement>) => InputNumber(e, setValues)}
+              onInput={(e: React.FormEvent<HTMLInputElement>) => phoneNumber(e)}
               value={values}
               {...register("phone", { required: true, pattern: phonePattern })}
             />
@@ -88,9 +91,14 @@ const Forms: FC = (): JSX.Element => {
               <option value="" disabled selected>
                 Select a Country
               </option>
-              <option value="Armenia">Armenia</option>
-              <option value="Russia">Russia</option>
-              <option value="France">France</option>
+              {countries.map(({ label, code }, i) => (
+                <>
+                  <option key={i} value={label}>
+                    <img src={`https://flagcdn.com/w20/${code?.toLowerCase()}.png`} width={20} height={16} alt="flag" />
+                    {label}
+                  </option>
+                </>
+              ))}
             </Form.Select>
             {errors?.country && <p className="error__text">Enter a valid country address</p>}
           </div>

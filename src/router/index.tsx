@@ -1,6 +1,7 @@
 import { FC, lazy, Suspense } from "react";
 
 import { Route, Routes } from "react-router-dom";
+import { CHECKOUT, INFORMATION, PAYMENT, THANK_YOU,WRONG_PAGE } from "constant";
 
 import Layout from "layout";
 
@@ -16,12 +17,12 @@ const Router: FC = (): JSX.Element => {
       <Routes>
         <Route path="" element={<Layout />}>
           <Route path="" element={<Home />} />
-          <Route path="checkout" element={<Checkout />}>
-            <Route path="information" element={<Information />} />
-            <Route path="payment" element={<Payments />} />
+          <Route path={CHECKOUT} element={<Checkout />}>
+            <Route path={INFORMATION} element={<Information />} />
+            <Route path={PAYMENT} element={<Payments />} />
           </Route>
-          <Route path="thankyou" element={<ThankYou />} />
-          <Route path="*" element={<Home />} />
+          <Route path={THANK_YOU} element={<ThankYou />} />
+          <Route path={WRONG_PAGE} element={<Home />} />
         </Route>
       </Routes>
     </Suspense>

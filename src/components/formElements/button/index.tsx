@@ -12,13 +12,22 @@ type Props = {
   name: string;
   type?: "button" | "submit" | "reset" | undefined;
   cart?: number;
+  disable?: boolean;
   OnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Buttons: FC<Props> = ({ imgs = "", imgsLeft = "", name = "", type = "button", cart = "", OnClick = () => {} }) => {
+const Buttons: FC<Props> = ({
+  imgs = "",
+  imgsLeft = "",
+  name = "",
+  type = "button",
+  cart = "",
+  OnClick = () => {},
+  disable = false,
+}) => {
   return (
     <>
-      <Button variant="dark" type={type} onClick={OnClick} disabled={+cart <= 0 && name === "Yes, I want" ? true : false}>
+      <Button variant="dark" type={type} onClick={OnClick} disabled={disable}>
         {imgsLeft && <img src={Arrow} alt="arrow" />}
         {name}
         {imgs && <img src={Arrow} alt="arrow" />}

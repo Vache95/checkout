@@ -1,8 +1,10 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-import { useLocation, useNavigate } from 'react-router-dom';
-import Logo from 'assets/header/Logo.png';
-import './header.scss';
+import { useLocation, useNavigate } from "react-router-dom";
+import { CHECKOUT, HOME, INFORMATION, PAYMENT } from "constant";
+
+import Logo from "assets/header/Logo.png";
+import "./header.scss";
 
 const Header: FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -10,14 +12,14 @@ const Header: FC = (): JSX.Element => {
 
   const navigateHeader = (): void => {
     switch (pathname) {
-      case '/':
-        return navigate('/');
-      case 'checkout/information':
-        return navigate('checkout/information');
-      case 'checkout/payment':
-        return navigate('checkout/payment');
+      case HOME:
+        return navigate(HOME);
+      case `/${CHECKOUT}/${INFORMATION}`:
+        return navigate(`/${CHECKOUT}/${INFORMATION}`);
+      case `/${CHECKOUT}/${PAYMENT}`:
+        return navigate(`${CHECKOUT}/${PAYMENT}`);
       default:
-        return navigate('/');
+        return navigate(HOME);
     }
   };
 

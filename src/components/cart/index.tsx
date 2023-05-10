@@ -19,28 +19,31 @@ import "./cart.scss";
 
 const Cart: FC = (): JSX.Element => {
   const { pathname } = useLocation();
-  const { cart, products } = useAppSelector(selectProducts);
-  console.log(cart, "cart");
-  console.log(products, "products");
+  const { cart } = useAppSelector(selectProducts);
+
+  const colculationPrice = (price: any, count: string | number): string => `€${price?.slice(1) * +count}`;
+
   return (
     <>
       <div className="cart" style={{ height: `${pathname === "/thankyou" ? "404px" : ""}` }}>
         <div className="cart__top">
-          {cart.length
-            ? cart.map(({ id, name, count, price }) => (
-                <div className="cart__top-item" key={id}>
-                  <div className="cart__top-item-img">
-                    <span>{count}</span>
-                    <img src="" alt="item1" />
+          {cart?.length
+            ? cart
+                ?.filter((e) => (+e.count > 0 ? e : null))
+                ?.map(({ id, name, count, price, images }) => (
+                  <div className="cart__top-item" key={id}>
+                    <div className="cart__top-item-img">
+                      <span>{count}</span>
+                      <img src={images} alt="item1" />
+                    </div>
+                    <div className="cart__top-item-name">
+                      <p>{name}</p>
+                    </div>
+                    <div className="cart__top-item-price">
+                      <p>{colculationPrice(price, count)}</p>
+                    </div>
                   </div>
-                  <div className="cart__top-item-name">
-                    <p>{name}</p>
-                  </div>
-                  <div className="cart__top-item-price">
-                    <p>{price}</p>
-                  </div>
-                </div>
-              ))
+                ))
             : cartItem(Item1, Item2).map(({ id, images, name, price }) => (
                 <div className="cart__top-item" key={id}>
                   <div className="cart__top-item-img">

@@ -6,7 +6,7 @@ type ProdutsItem = {
   code: string;
   price: string;
   name: string;
-  count: number | undefined | null | string;
+  count: number | string;
 };
 type InformationData = {
   address: string;
@@ -33,7 +33,7 @@ export const initialState: Products = {
       id: "1",
       images: Slide,
       code: "1111",
-      price: "€69.00",
+      price: "€69",
       name: "Nike sneakers",
       count: "",
     },
@@ -41,7 +41,7 @@ export const initialState: Products = {
       id: "2",
       images: Slide,
       code: "2222",
-      price: "€79.00",
+      price: "€79",
       name: "Puma sneakers",
       count: "",
     },
@@ -49,7 +49,7 @@ export const initialState: Products = {
       id: "3",
       images: Slide,
       code: "2222",
-      price: "€29.00",
+      price: "€29",
       name: "Adidas sneakers",
       count: "",
     },

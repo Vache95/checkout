@@ -5,6 +5,7 @@ import Buttons from "components/formElements/button";
 import { selectProducts } from "store/selectors";
 import { useAppSelector } from "hook/useSelector";
 import { useNavigate } from "react-router-dom";
+import { CHECKOUT,INFORMATION} from "constant";
 
 import Slider from "components/slider/Slider";
 import Support from "components/support";
@@ -16,7 +17,7 @@ const Home: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const { cart } = useAppSelector(selectProducts);
 
-  const pageInformation = (): void => navigate("checkout/information");
+  const pageInformation = (): void => navigate(`${CHECKOUT}/${INFORMATION}`);
 
   return (
     <div className="home">
@@ -44,7 +45,14 @@ const Home: FC = (): JSX.Element => {
             <Support />
           </div>
           <div className="content__buttons">
-            <Buttons type="button" imgs name="Yes, I want" cart={cart.length} OnClick={pageInformation} />
+            <Buttons
+              type="button"
+              imgs
+              name="Yes, I want"
+              cart={cart.length}
+              OnClick={pageInformation}
+              disable={cart.length === 0 ? true : false}
+            />
           </div>
         </div>
       </div>

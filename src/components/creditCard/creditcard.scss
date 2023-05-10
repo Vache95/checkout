@@ -65,6 +65,15 @@
     left: 20px;
   }
 }
+.card__content-number {
+  .card-type-img {
+    width: 25px;
+    height: 20px;
+    position: absolute;
+    top: 14px;
+    left: 19px;
+  }
+}
 
 @media (max-width: 550px) {
   .card__content-datecode {

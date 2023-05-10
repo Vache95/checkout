@@ -52,7 +52,7 @@ const PriceCalculation: FC = (): JSX.Element => {
         </span>
       </div>
       <div className="price__buy">
-        <Buttons type="button" name="Buy" OnClick={addProducts} />
+        <Buttons type="button" name="Buy" OnClick={addProducts} disable={false} />
       </div>
     </div>
   );
