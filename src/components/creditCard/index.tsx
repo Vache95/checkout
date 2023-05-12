@@ -1,6 +1,7 @@
 import { FC, useState, MouseEvent, FormEvent } from "react";
 
-import { CustomMask, DefaultRegex, InputNumber, CardNameValues, detectCardType } from "helper/input";
+import { CustomMask, DefaultRegex, InputNumber, CardNameValues } from "helper/input";
+import { detectCardType } from "helper/carddDetectType";
 
 import Input from "components/formElements/input";
 import { cardNamePattern } from "utils/validation";

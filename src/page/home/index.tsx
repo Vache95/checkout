@@ -5,7 +5,7 @@ import Buttons from "components/formElements/button";
 import { selectProducts } from "store/selectors";
 import { useAppSelector } from "hook/useSelector";
 import { useNavigate } from "react-router-dom";
-import { CHECKOUT,INFORMATION} from "constant";
+import { CHECKOUT, INFORMATION } from "constant";
 
 import Slider from "components/slider/Slider";
 import Support from "components/support";
@@ -13,9 +13,11 @@ import PriceCalculation from "components/priceCaluculation";
 
 import "./upsell.scss";
 
+
 const Home: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const { cart } = useAppSelector(selectProducts);
+
 
   const pageInformation = (): void => navigate(`${CHECKOUT}/${INFORMATION}`);
 

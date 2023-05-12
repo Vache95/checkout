@@ -87,17 +87,15 @@ const Forms: FC = (): JSX.Element => {
           <h3>Shipping Details</h3>
           <div className={errors?.country ? "details__country error" : "details__country"}>
             <img src={Vector} alt="vector" />
-            <Form.Select {...register("country", { required: true })}>
-              <option value="" disabled selected>
+            <Form.Select {...register("country", { required: true })} defaultValue="" required>
+              <option value="" disabled>
                 Select a Country
               </option>
-              {countries.map(({ label, code }, i) => (
-                <>
-                  <option key={i} value={label}>
-                    <img src={`https://flagcdn.com/w20/${code?.toLowerCase()}.png`} width={20} height={16} alt="flag" />
-                    {label}
-                  </option>
-                </>
+              {countries.map(({ label }, i) => (
+                <option key={i} value={label}>
+                  {/* <img src={`https://flagcdn.com/w20/${code?.toLowerCase()}.png`} width={20} height={16} alt="flag" /> */}
+                  {label}
+                </option>
               ))}
             </Form.Select>
             {errors?.country && <p className="error__text">Enter a valid country address</p>}
@@ -138,8 +136,8 @@ const Forms: FC = (): JSX.Element => {
           </div>
           <div className="citycode">
             <div className={errors?.city ? "city error" : "city"}>
-              <Form.Select {...register("city", { required: true })}>
-                <option value="" disabled selected>
+              <Form.Select {...register("city", { required: true })} defaultValue="" required>
+                <option value="" disabled>
                   City
                 </option>
                 <option value="Erevan">Erevan</option>

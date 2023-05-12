@@ -1,6 +1,7 @@
 import { FC, SetStateAction, useEffect, useState } from "react";
 
 import Carousel from "react-bootstrap/Carousel";
+import { useQuery } from "react-query";
 
 import { selectProducts } from "store/selectors";
 import { useAppSelector } from "hook/useSelector";
@@ -14,10 +15,22 @@ const Slider: FC = (): JSX.Element => {
   const { products } = useAppSelector(selectProducts);
   const dispatch = useAppDispatch();
 
+  const product = async () => {
+    const response = await fetch("http://localhost:4000/products", { method: "GET" });
+    const data = response.json();
+    return data;
+  };
+
+  const { data, isSuccess } = useQuery({
+    queryFn: () => product(),
+    queryKey: ["products", "boths"],
+  });
+
   const handleSelect = (selectedIndex: SetStateAction<number>) => {
     setIndex(selectedIndex);
     dispatch(addActiveProducts(index));
   };
+
   useEffect(() => {
     dispatch(addActiveProducts(index));
   }, [dispatch, index]);
@@ -25,11 +38,12 @@ const Slider: FC = (): JSX.Element => {
   return (
     <div className="slider">
       <Carousel activeIndex={index} onSelect={handleSelect}>
-        {products.map(({ id, images }) => (
-          <Carousel.Item key={id}>
-            <img src={images} alt="slide" />
-          </Carousel.Item>
-        ))}
+        {isSuccess &&
+          data?.map(({ id, images }: any) => (
+            <Carousel.Item key={id}>
+              <img src={images} alt="slide" />
+            </Carousel.Item>
+          ))}
       </Carousel>
     </div>
   );

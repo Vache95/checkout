@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-// import '@stripe/stripe-jsS';
 
-import Router from 'router';
+
+import Router from "router";
 
 const App: FC = (): JSX.Element => <Router />;
 

@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "images": "https://static.nike.com/a/images/f_auto,cs_srgb/w_1536,c_limit/730a5793-a44a-4ba2-bbe0-9ca94114dd4f/nike-just-do-it.jpg",
+      "code": "1111",
+      "price": "€69",
+      "name": "Nike sneakers",
+      "count": ""
+    },
+    {
+      "id": "2",
+      "images": "https://static.nike.com/a/images/f_auto,cs_srgb/w_1536,c_limit/730a5793-a44a-4ba2-bbe0-9ca94114dd4f/nike-just-do-it.jpg",
+      "code": "2222",
+      "price": "€79",
+      "name": "Puma sneakers",
+      "count": ""
+    },
+    {
+      "id": "3",
+      "images": "https://static.nike.com/a/images/f_auto,cs_srgb/w_1536,c_limit/730a5793-a44a-4ba2-bbe0-9ca94114dd4f/nike-just-do-it.jpg",
+      "code": "2222",
+      "price": "€29",
+      "name": "Adidas sneakers",
+      "count": ""
+    }
+  ]
+}
