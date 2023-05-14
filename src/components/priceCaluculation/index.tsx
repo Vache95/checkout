@@ -1,15 +1,15 @@
-import { FC, MouseEvent, useState } from "react";
+import { FC, MouseEvent, useState } from 'react';
 
-import { selectProducts } from "store/selectors";
-import { useAppSelector } from "hook/useSelector";
-import { useAppDispatch } from "hook/useDispatch";
-import { addCart } from "store/slices/products/productsSlices";
+import { selectProducts } from 'store/selectors';
+import { useAppSelector } from 'hook/useSelector';
+import { useAppDispatch } from 'hook/useDispatch';
+import { addCart } from 'store/slices/products/productsSlices';
 
-import Minus from "assets/svg/Vector-minus.svg";
-import Plus from "assets/svg/fi-rr-plus.svg";
-import Buttons from "components/formElements/button";
+import Minus from 'assets/svg/Vector-minus.svg';
+import Plus from 'assets/svg/fi-rr-plus.svg';
+import Buttons from 'components/formElements/button';
 
-import "./pricecalculation.scss";
+import './pricecalculation.scss';
 
 const PriceCalculation: FC = (): JSX.Element => {
   const [countProducts, setCountProducts] = useState<number>(0);
@@ -20,10 +20,10 @@ const PriceCalculation: FC = (): JSX.Element => {
   const countProductsFunc = (e: MouseEvent<HTMLSpanElement>): void => {
     const target = e.target as HTMLSpanElement;
     const id = target.id;
-    if (id === "minus" && countProducts > 0) {
+    if (id === 'minus' && countProducts > 0) {
       setCountProducts((prev) => prev - 1);
     }
-    if (id === "plus") {
+    if (id === 'plus') {
       setCountProducts((prev) => prev + 1);
     }
   };
