@@ -6,6 +6,7 @@ import { store } from "store/store";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { QueryClient, QueryClientProvider } from "react-query";
+import ExpensesContextProvider from "context";
 import App from "./App";
 import "style/style.scss";
 
@@ -21,9 +22,11 @@ if (rootElem) {
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            <Elements stripe={stripePromise}>
-              <App />
-            </Elements>
+            <ExpensesContextProvider>
+              <Elements stripe={stripePromise}>
+                <App />
+              </Elements>
+            </ExpensesContextProvider>
           </Provider>
         </QueryClientProvider>
       </BrowserRouter>

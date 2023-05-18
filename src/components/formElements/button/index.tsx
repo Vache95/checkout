@@ -11,7 +11,6 @@ type Props = {
   imgsLeft?: boolean;
   name: string;
   type?: "button" | "submit" | "reset" | undefined;
-  cart?: number;
   disable?: boolean;
   OnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
@@ -21,7 +20,6 @@ const Buttons: FC<Props> = ({
   imgsLeft = "",
   name = "",
   type = "button",
-  cart = "",
   OnClick = () => {},
   disable = false,
 }) => {

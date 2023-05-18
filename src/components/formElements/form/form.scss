@@ -170,6 +170,11 @@
     }
   }
 }
+.details__country {
+  p {
+    border: 1px solid black;
+  }
+}
 @media (max-width: 992px) {
   .form {
     input,

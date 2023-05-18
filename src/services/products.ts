@@ -1,4 +1,17 @@
-import { PRODUCTS } from 'constant';
-import { api } from 'lib/api';
+import { PRODUCTS, CARTS, CUPON } from "constant";
+import { Http } from "lib/api";
 
-export const products = async () => await api(`${PRODUCTS}`, { method: 'GET' });
+export const getProducts = () => Http.get(`${PRODUCTS}`);
+export const getCarts = () => Http.get(`${CARTS}`);
+export const getCupon = (cupon: string) => Http.get(`${CUPON}/${cupon}`);
+export const updateCart = (id: string, countProducts: number) =>
+  Http.patch(`${CARTS}/${id}`, {
+    count: `${countProducts}`,
+  });
+export const deleteProduct = (id: string) => {
+  console.log(id, "33333");
+
+  Http.patch(`${CARTS}/${id}`, {
+    count: "",
+  });
+};

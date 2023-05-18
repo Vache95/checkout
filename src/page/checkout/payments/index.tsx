@@ -14,11 +14,11 @@ import Address from "assets/svg/Vector (2).svg";
 import Org from "assets/svg/Vector (3).svg";
 import Input from "components/formElements/input";
 
-import "./payments.scss";
 import { useNavigate } from "react-router-dom";
 import { countries } from "config/config";
 import { useStripe } from "@stripe/react-stripe-js";
-// import { useQuery } from "react-query";
+
+import "./payments.scss";
 
 interface FormData {
   chekbox: boolean;
@@ -40,9 +40,12 @@ interface FormData {
 
 const Payments: FC = (): JSX.Element => {
   const [option, setOption] = useState<boolean>(false);
+  const [intentdId, setIntentdId] = useState<string>("");
+  const [clientSecret, setClientSecret] = useState<string>();
+  const [customorId, setCustomorId] = useState("");
   const navigate = useNavigate();
 
-  const stripe = useStripe();
+  const stripe: any = useStripe();
 
   const {
     register,
@@ -50,68 +53,79 @@ const Payments: FC = (): JSX.Element => {
     formState: { errors },
   } = useForm<FormData>();
 
-  // const { data, isLoading, isSuccess } = useQuery({
-  //   queryFn: () => testq(),
-  //   queryKey: ["user", "pay"],
-  // };)
+  function stripeBody(data: any) {
+    const test: any = {
+      "payment_method_data[type]": "card",
+      "payment_method_data[card][number]": data.number,
+      "payment_method_data[card][exp_month]": data.exp_month,
+      "payment_method_data[card][exp_year]": data.exp_year,
+      "payment_method_data[card][cvc]": data.cvc,
+    };
+    var formBody: any = [];
+    for (var property in test) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(test[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    return formBody;
+  }
 
   const onSubmit = async (data: FormData) => {
-    const sk = "sk_test_51N6E82GvTPkBaR2vkZmyQQusAAR5y9XtBGRgl6HcqI9pUcgzlenzMU2plCKBNtS2HjQAeiuECjShfcW6YlsH6Wks00aeOGMOqr";
-    const client_secret: any = "pi_3N6aB0GvTPkBaR2v0Mwqb0h7_secret_sVs5mRpQdvs3Inq5ea8G6Wi5v";
+    const num: any = {
+      number: "4242424242424242",
+      exp_month: 8,
+      exp_year: 24,
+      cvc: "123",
+    };
 
-    return await fetch("https://api.stripe.com/v1/payment_intents", {
+    fetch("http://localhost:5001/cretePaymentMethod", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Bearer ${sk}`,
-      },
-      body: new URLSearchParams({
-        amount: "1000",
-        currency: "usd",
-      }),
-    }).then((r) => navigate(`/${THANK_YOU}`));
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: stripeBody(num) }),
+    })
+      .then((r) => r.json())
+      .then((response) => {
+        console.log(response.cratepaymentMethod.id);
 
-    // const response = await fetch("https://api.stripe.com/v1/payment_intents", {
+        // Update the PaymentIntent with the payment method ID
+        fetch(`https://api.stripe.com/v1/payment_intents/${intentdId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            Authorization:
+              "Bearer sk_test_51N6E82GvTPkBaR2vkZmyQQusAAR5y9XtBGRgl6HcqI9pUcgzlenzMU2plCKBNtS2HjQAeiuECjShfcW6YlsH6Wks00aeOGMOqr",
+          },
+          body: `payment_method=${response.cratepaymentMethod.id}`, // Replace with the payment method ID
+        })
+          .then((r) => r.json())
+          .then((updatedPaymentIntent) => {
+            // Confirm the PaymentIntent again after updating the payment method
+            stripe.confirmPayment({
+              clientSecret: updatedPaymentIntent.client_secret,
+              confirmParams: {
+                return_url: "https://example.com/order/123/complete", // Replace with your actual return URL
+              },
+            });
+          });
+      });
+
+    // const params = new URLSearchParams();
+    // params.append("payment_method", "pm_card_visa");
+
+    // fetch(`https://api.stripe.com/v1/payment_intents/${intentdId}/confirm`, {
     //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/x-www-form-urlencoded",
-    //     Authorization: `Bearer ${sk}`,
+    //     Authorization:
+    //       "Bearer sk_test_51N6E82GvTPkBaR2vkZmyQQusAAR5y9XtBGRgl6HcqI9pUcgzlenzMU2plCKBNtS2HjQAeiuECjShfcW6YlsH6Wks00aeOGMOqr",
     //   },
-    //   body: new URLSearchParams({
-    //     amount: "1000",
-    //     currency: "usd",
-    //   }),
-    // }).then((r) => navigate(`/${THANK_YOU}`));
-
-    // const num: any = {
-    //   number: "4242424242424242",
-    //   exp_month: 8,
-    //   exp_year: 24,
-    //   cvc: "123",
-    // };
-
-    // const payload = await stripe?.createPaymentMethod({
-    //   type: "card",
-    //   card: num,
-    // });
-    // console.log("[PaymentMethod]", payload);
-
-    // stripe?.confirmCardPayment(client_secret, {
-    //   payment_method: {
-    //     card: num,
-    //     billing_details: {
-    //       name: "John Doe",
-    //       email: "johndoe@example.com",
-    //       address: {
-    //         line1: "123 Main St",
-    //         city: "Anytown",
-    //         state: "CA",
-    //         postal_code: "12345",
-    //         country: "US",
-    //       },
-    //     },
-    //   },
-    // });
+    //   body: params.toString(),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => console.log(data))
+    //   .catch((error) => console.error(error));
+    // navigate(`/${THANK_YOU}`);
   };
 
   const openOption = (e: FormEvent<HTMLInputElement>): void => {
@@ -119,6 +133,26 @@ const Payments: FC = (): JSX.Element => {
     const id = target.id;
     id === "top" ? setOption(false) : setOption(true);
   };
+
+  useEffect(() => {
+    fetch("http://localhost:5001/intentd", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: 1444 }),
+    })
+      .then((r) => r.json())
+      .then((response) => {
+        setClientSecret(response?.client_secret?.client_secret);
+        setIntentdId(response?.client_secret?.id);
+      });
+    fetch("http://localhost:5001/customor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ description: "dd@getMaxListeners.com" }),
+    })
+      .then((r) => r.json())
+      .then((response) => setCustomorId(response?.customers?.id));
+  }, []);
 
   return (
     <div className="payments">
@@ -159,7 +193,7 @@ const Payments: FC = (): JSX.Element => {
             <div className={option ? "bottomaddress__option option--mod" : "bottomaddress__option"}>
               <div className="bottomaddress__option-country">
                 <img src={Vector} alt="vector" />
-                <Form.Select {...register("country")} defaultValue="" required>
+                <Form.Select {...register("country")} defaultValue="">
                   <option value="" disabled>
                     Select a Country
                   </option>
@@ -191,7 +225,7 @@ const Payments: FC = (): JSX.Element => {
               </div>
               <div className="bottomaddress__option-citycode">
                 <div className="bottomaddress__option-city">
-                  <Form.Select aria-label="Default select example" {...register("city")} defaultValue="" required>
+                  <Form.Select aria-label="Default select example" {...register("city")} defaultValue="">
                     <option value="" disabled>
                       City
                     </option>

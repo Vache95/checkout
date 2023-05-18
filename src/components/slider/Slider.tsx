@@ -1,38 +1,27 @@
-import { FC, SetStateAction, useEffect, useState } from 'react';
+import { FC, SetStateAction, useEffect, useState } from "react";
 
-import Carousel from 'react-bootstrap/Carousel';
-import { useQuery } from 'react-query';
+import Carousel from "react-bootstrap/Carousel";
 
-// import { selectProducts } from 'store/selectors';
-// import { useAppSelector } from 'hook/useSelector';
-import { useAppDispatch } from 'hook/useDispatch';
-import { products } from 'services/products';
-import { addActiveProducts } from 'store/slices/products/productsSlices';
+import { useReactQuery } from "hook/useQuery";
+import { useExpensesData } from "context";
+import { getProducts } from "services/products";
 
-import './slider.scss';
-import { useReactQuery } from 'hook/useQuery';
+import "./slider.scss";
 
 const Slider: FC = (): JSX.Element => {
-  const [index, setIndex] = useState<number>(0);
-  // const { products } = useAppSelector(selectProducts);
-  const dispatch = useAppDispatch();
-
-  // const { data, isSuccess } = useQuery({
-
-  //   queryFn: () => products(),
-  //   queryKey: ['products', 'boths'],
-  // });
   
-  const { data, isSuccess } = useReactQuery(products, 'products');
+  const [index, setIndex] = useState<number>(0);
+  const { setState }: any = useExpensesData();
+  const { data, isSuccess } = useReactQuery(() => getProducts(), "products");
 
   const handleSelect = (selectedIndex: SetStateAction<number>) => {
     setIndex(selectedIndex);
-    dispatch(addActiveProducts(index));
+    setState(index + 1);
   };
 
   useEffect(() => {
-    dispatch(addActiveProducts(index));
-  }, [dispatch, index]);
+    setState(index + 1);
+  }, [index]);
 
   return (
     <div className="slider">

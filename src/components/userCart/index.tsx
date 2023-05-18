@@ -1,24 +1,23 @@
 import { FC } from "react";
 import { userCart } from "./config";
 
-import { selectProducts } from "store/selectors";
-import { useAppSelector } from "hook/useSelector";
+import { useExpensesData } from "context";
 
 import "./usercart.scss";
 
 const UserCart: FC = (): JSX.Element => {
-  const { information } = useAppSelector(selectProducts);
+  const { information }: any = useExpensesData();
 
   const userInfo = (name: string): string => {
     switch (name) {
       case "Name:":
-        return information?.firstName;
+        return information?.firstName ? information?.firstName : null;
       case "Email:":
-        return information?.email;
+        return information?.email ? information?.email : null;
       case "Ship to:":
-        return information?.address;
+        return information?.address ? information?.address : null;
       case "Shipping Method:":
-        return information?.checkbox.toString();
+        return information?.checkbox ? information?.checkbox.toString() : null;
       default:
         return "------";
     }

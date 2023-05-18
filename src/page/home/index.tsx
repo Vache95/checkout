@@ -2,22 +2,21 @@ import { FC } from "react";
 
 import Buttons from "components/formElements/button";
 
-import { selectProducts } from "store/selectors";
-import { useAppSelector } from "hook/useSelector";
 import { useNavigate } from "react-router-dom";
 import { CHECKOUT, INFORMATION } from "constant";
 
 import Slider from "components/slider/Slider";
 import Support from "components/support";
 import PriceCalculation from "components/priceCaluculation";
+import { getCarts } from "services/products";
+import { useReactQuery } from "hook/useQuery";
 
 import "./upsell.scss";
 
-
 const Home: FC = (): JSX.Element => {
   const navigate = useNavigate();
-  const { cart } = useAppSelector(selectProducts);
-
+  const { data: cart } = useReactQuery(() => getCarts(), "carts");
+  const filterCart = cart?.filter((e: any) => (+e.count > 0 ? e : null));
 
   const pageInformation = (): void => navigate(`${CHECKOUT}/${INFORMATION}`);
 
@@ -51,9 +50,8 @@ const Home: FC = (): JSX.Element => {
               type="button"
               imgs
               name="Yes, I want"
-              cart={cart.length}
               OnClick={pageInformation}
-              disable={cart.length === 0 ? true : false}
+              disable={filterCart?.length === 0 ? true : false}
             />
           </div>
         </div>

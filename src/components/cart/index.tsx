@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { useLocation } from "react-router-dom";
 
@@ -9,8 +9,10 @@ import { cartItem } from "./config";
 import Clab from "./Clab";
 import SubCart from "./SubCart";
 
-import { selectProducts } from "store/selectors";
-import { useAppSelector } from "hook/useSelector";
+import { useReactQuery } from "hook/useQuery";
+import { getCarts } from "services/products";
+import { useReactMutation } from "hook/useMutation";
+import { deleteProduct } from "services/products";
 
 import Item1 from "assets/cart/Rectangle 4159.jpg";
 import Item2 from "assets/cart/Rectangle 4160.jpg";
@@ -18,29 +20,55 @@ import Item2 from "assets/cart/Rectangle 4160.jpg";
 import "./cart.scss";
 
 const Cart: FC = (): JSX.Element => {
+  const [productId, setProductId] = useState<string>("");
+  const [discountValue, setDiscountValue] = useState("");
+
   const { pathname } = useLocation();
-  const { cart } = useAppSelector(selectProducts);
+
+  const { data: cart, isSuccess } = useReactQuery(() => getCarts(), "carts");
+  const { mutate: product } = useReactMutation(() => deleteProduct(productId), "carts");
+
+  const updateProduct = (id: string) => {
+    setProductId(id);
+    setTimeout(() => {
+      product();
+    }, 0);
+  };
 
   const colculationPrice = (price: any, count: string | number): string => `€${price?.slice(1) * +count}`;
+
+  const total = cart
+    ?.map((e: any) => {
+      if (+e.count > 0) {
+        const price = e?.price?.slice(1);
+        const mutationPrice = +price * e?.count;
+        return mutationPrice;
+      }
+      return 0;
+    })
+    .reduce((a: number, b: number) => a + b, 0);
 
   return (
     <>
       <div className="cart" style={{ height: `${pathname === "/thankyou" ? "404px" : ""}` }}>
         <div className="cart__top">
-          {cart?.length
+          {isSuccess
             ? cart
-                ?.filter((e) => (+e.count > 0 ? e : null))
-                ?.map(({ id, name, count, price, images }) => (
-                  <div className="cart__top-item" key={id}>
+                ?.filter((e: any) => (+e.count > 0 ? e : null))
+                ?.map((datas: any) => (
+                  <div className="cart__top-item" key={datas?.id}>
                     <div className="cart__top-item-img">
-                      <span>{count}</span>
-                      <img src={images} alt="item1" />
+                      <span className="deleteproduct" onClick={() => updateProduct(datas?.id)}>
+                        X
+                      </span>
+                      <span className="countproduct">{datas?.count}</span>
+                      <img src={datas?.images} alt="item1" />
                     </div>
                     <div className="cart__top-item-name">
-                      <p>{name}</p>
+                      <p>{datas?.name}</p>
                     </div>
                     <div className="cart__top-item-price">
-                      <p>{colculationPrice(price, count)}</p>
+                      <p>{colculationPrice(datas?.price, datas?.count)}</p>
                     </div>
                   </div>
                 ))
@@ -67,6 +95,8 @@ const Cart: FC = (): JSX.Element => {
                 id="inputPassword5"
                 aria-describedby="passwordHelpBlock"
                 placeholder="Discount code"
+                value={discountValue}
+                onChange={(e) => setDiscountValue(e.target.value)}
               />
               <Button variant="dark">Apply</Button>
             </div>
@@ -79,7 +109,7 @@ const Cart: FC = (): JSX.Element => {
             >
               <div className="subtotal">
                 <p>Subtotal</p>
-                <span>€138.00</span>
+                <span>€{total}</span>
               </div>
               <div className="shipping">
                 <p>Subtotal</p>
@@ -93,7 +123,7 @@ const Cart: FC = (): JSX.Element => {
             <div className="bottom-information_bottom">
               <div className="total">
                 <p>Total</p>
-                <span>€138.00</span>
+                <span>€{total}</span>
               </div>
             </div>
           </div>
