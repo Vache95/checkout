@@ -60,7 +60,6 @@ app.post("/intentdid", async (req, res) => {
   });
 app.post("/intentdconfirm", async (req, res, next) => {
   try {
-    // const intentdconfirm = await stripe.paymentIntents.confirm("pi_3N8guxGvTPkBaR2v1JaC3DXR", { payment_method: "pm_card_visa" });
     const intentdconfirm = await stripe.setupIntents.confirm(req.body.id, { payment_method: "pm_card_visa" });
     res.status(200).json({
       success: true,

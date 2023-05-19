@@ -2,10 +2,8 @@ import { FC, FormEvent, useEffect, useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import { useForm } from "react-hook-form";
-// import { loadStripe } from '@stripe/stripe-js';
 import Buttons from "components/formElements/button";
 import CreditCard from "components/creditCard";
-import { THANK_YOU } from "constant";
 
 import Vector from "assets/svg/Vector (1).svg";
 import Phone from "assets/svg/fi-rr-phone-call.svg";
@@ -14,37 +12,15 @@ import Address from "assets/svg/Vector (2).svg";
 import Org from "assets/svg/Vector (3).svg";
 import Input from "components/formElements/input";
 
-import { useNavigate } from "react-router-dom";
 import { countries } from "config/config";
 import { useStripe } from "@stripe/react-stripe-js";
+import { CardData, FormData } from "@types";
+import { stripeBody } from "helper/stripeCard";
 
 import "./payments.scss";
 
-interface FormData {
-  chekbox: boolean;
-  radiotop: boolean;
-  radiobottom: boolean;
-  country: string;
-  firstname: string;
-  lastname: string;
-  address: string;
-  org: string;
-  city: string;
-  code: string;
-  phone: string;
-  cardnumber: string;
-  cardname: string;
-  carddate: string;
-  cardcode: string;
-}
-
 const Payments: FC = (): JSX.Element => {
   const [option, setOption] = useState<boolean>(false);
-  const [intentdId, setIntentdId] = useState<string>("");
-  const [clientSecret, setClientSecret] = useState<string>();
-  const [customorId, setCustomorId] = useState("");
-  const navigate = useNavigate();
-
   const stripe: any = useStripe();
 
   const {
@@ -53,79 +29,61 @@ const Payments: FC = (): JSX.Element => {
     formState: { errors },
   } = useForm<FormData>();
 
-  function stripeBody(data: any) {
-    const test: any = {
-      "payment_method_data[type]": "card",
-      "payment_method_data[card][number]": data.number,
-      "payment_method_data[card][exp_month]": data.exp_month,
-      "payment_method_data[card][exp_year]": data.exp_year,
-      "payment_method_data[card][cvc]": data.cvc,
-    };
-    var formBody: any = [];
-    for (var property in test) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(test[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
-    return formBody;
-  }
-
-  const onSubmit = async (data: FormData) => {
-    const num: any = {
-      number: "4242424242424242",
-      exp_month: 8,
-      exp_year: 24,
-      cvc: "123",
-    };
-
-    fetch("http://localhost:5001/cretePaymentMethod", {
+  const intentRequst = (card: CardData): void => {
+    fetch("http://localhost:5001/intentd", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: stripeBody(num) }),
+      body: JSON.stringify({ amount: 7777 }),
     })
       .then((r) => r.json())
       .then((response) => {
-        console.log(response.cratepaymentMethod.id);
-
-        // Update the PaymentIntent with the payment method ID
-        fetch(`https://api.stripe.com/v1/payment_intents/${intentdId}`, {
+        paymentRequst(card, response?.client_secret?.id);
+      });
+  };
+  const paymentRequst = (card: CardData, id: string): void => {
+    console.log(stripeBody(card), "mtav");
+    fetch("http://localhost:5001/cretePaymentMethod", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: stripeBody(card) }),
+    })
+      .then((r) => r.json())
+      .then((response) => {
+        fetch(`https://api.stripe.com/v1/payment_intents/${id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
             Authorization:
               "Bearer sk_test_51N6E82GvTPkBaR2vkZmyQQusAAR5y9XtBGRgl6HcqI9pUcgzlenzMU2plCKBNtS2HjQAeiuECjShfcW6YlsH6Wks00aeOGMOqr",
           },
-          body: `payment_method=${response.cratepaymentMethod.id}`, // Replace with the payment method ID
+          body: `payment_method=${response.cratepaymentMethod.id}`,
         })
           .then((r) => r.json())
           .then((updatedPaymentIntent) => {
-            // Confirm the PaymentIntent again after updating the payment method
             stripe.confirmPayment({
               clientSecret: updatedPaymentIntent.client_secret,
               confirmParams: {
-                return_url: "https://example.com/order/123/complete", // Replace with your actual return URL
+                // return_url: `http://localhost:3000/${THANK_YOU}`,
               },
             });
           });
       });
+  };
 
-    // const params = new URLSearchParams();
-    // params.append("payment_method", "pm_card_visa");
-
-    // fetch(`https://api.stripe.com/v1/payment_intents/${intentdId}/confirm`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/x-www-form-urlencoded",
-    //     Authorization:
-    //       "Bearer sk_test_51N6E82GvTPkBaR2vkZmyQQusAAR5y9XtBGRgl6HcqI9pUcgzlenzMU2plCKBNtS2HjQAeiuECjShfcW6YlsH6Wks00aeOGMOqr",
-    //   },
-    //   body: params.toString(),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data))
-    //   .catch((error) => console.error(error));
-    // navigate(`/${THANK_YOU}`);
+  const onSubmit = async (data: FormData) => {
+    // const num: any = {
+    //   number: "4242424242424242",
+    //   exp_month: 8,
+    //   exp_year: 24,
+    //   cvc: "123",
+    // };
+    const card: CardData = {
+      number: data.cardnumber,
+      exp_month: data.carddate.slice(0, 2),
+      exp_year: data.carddate.slice(5),
+      cvc: data.cardcode,
+    };
+    intentRequst(card);
   };
 
   const openOption = (e: FormEvent<HTMLInputElement>): void => {
@@ -133,26 +91,6 @@ const Payments: FC = (): JSX.Element => {
     const id = target.id;
     id === "top" ? setOption(false) : setOption(true);
   };
-
-  useEffect(() => {
-    fetch("http://localhost:5001/intentd", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: 1444 }),
-    })
-      .then((r) => r.json())
-      .then((response) => {
-        setClientSecret(response?.client_secret?.client_secret);
-        setIntentdId(response?.client_secret?.id);
-      });
-    fetch("http://localhost:5001/customor", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ description: "dd@getMaxListeners.com" }),
-    })
-      .then((r) => r.json())
-      .then((response) => setCustomorId(response?.customers?.id));
-  }, []);
 
   return (
     <div className="payments">
