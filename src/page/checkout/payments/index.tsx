@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useState } from "react";
+import { FC, FormEvent, useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import { useForm } from "react-hook-form";
@@ -11,16 +11,21 @@ import User from "assets/svg/fi-rr-user.svg";
 import Address from "assets/svg/Vector (2).svg";
 import Org from "assets/svg/Vector (3).svg";
 import Input from "components/formElements/input";
+import CryptoJS from "crypto-js";
+import { THANK_YOU } from "constant";
 
 import { countries } from "config/config";
 import { useStripe } from "@stripe/react-stripe-js";
 import { CardData, FormData } from "@types";
 import { stripeBody } from "helper/stripeCard";
+import { useExpensesData } from "context";
 
 import "./payments.scss";
 
 const Payments: FC = (): JSX.Element => {
   const [option, setOption] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const { setAlert }: any = useExpensesData();
   const stripe: any = useStripe();
 
   const {
@@ -41,7 +46,6 @@ const Payments: FC = (): JSX.Element => {
       });
   };
   const paymentRequst = (card: CardData, id: string): void => {
-    console.log(stripeBody(card), "mtav");
     fetch("http://localhost:5001/cretePaymentMethod", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -60,23 +64,34 @@ const Payments: FC = (): JSX.Element => {
         })
           .then((r) => r.json())
           .then((updatedPaymentIntent) => {
+            setAlert(true);
+            setLoading(false);
             stripe.confirmPayment({
               clientSecret: updatedPaymentIntent.client_secret,
               confirmParams: {
                 // return_url: `http://localhost:3000/${THANK_YOU}`,
               },
             });
+          })
+          .catch((e) => {
+            setAlert("error");
+            setLoading(false);
           });
       });
   };
 
   const onSubmit = async (data: FormData) => {
-    // const num: any = {
-    //   number: "4242424242424242",
-    //   exp_month: 8,
-    //   exp_year: 24,
-    //   cvc: "123",
+    setLoading(true);
+
+    // const hashedNum: any = CryptoJS.SHA256(num.number).toString();
+
+    // const psiDSSFormat: any = {
+    //   number: hashedNum,
+    //   exp_month: num.exp_month,
+    //   exp_year: num.exp_year,
+    //   cvc: num.cvc,
     // };
+
     const card: CardData = {
       number: data.cardnumber,
       exp_month: data.carddate.slice(0, 2),
@@ -189,7 +204,7 @@ const Payments: FC = (): JSX.Element => {
             </div>
           </>
         </div>
-        <Buttons type="submit" imgs name="Validate the order" />
+        <Buttons type="submit" imgs name="Validate the order" load={loading} />
       </form>
     </div>
   );
