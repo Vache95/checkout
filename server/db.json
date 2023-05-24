@@ -62,7 +62,7 @@
       "images": "https://wallpaperaccess.com/full/3963370.jpg",
       "price": "€69",
       "name": "Nike sneakers",
-      "count": "1"
+      "count": ""
     },
     {
       "id": "2",
@@ -70,7 +70,7 @@
       "code": "2222",
       "price": "€79",
       "name": "Puma sneakers",
-      "count": "1"
+      "count": ""
     },
     {
       "id": "3",
