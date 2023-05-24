@@ -43,12 +43,12 @@ app.post('/intentd', async (req, res) => {
     console.log('error');
   }
 });
-app.post('/intentdid', async (req, res) => {
+app.post("/intentdid", async (req, res) => {
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: req.body.amount,
-      currency: 'usd',
-      metadata: { integration_check: 'accept_a_payment' },
+      currency: "usd",
+      metadata: { integration_check: "accept_a_payment" },
     });
     res.status(200).json({
       success: true,
@@ -56,15 +56,12 @@ app.post('/intentdid', async (req, res) => {
     });
   } catch (err) {
     // next(err);
-    console.log('error');
+    console.log("error");
   }
 });
-app.post('/intentdconfirm', async (req, res, next) => {
+app.post("/intentdconfirm", async (req, res, next) => {
   try {
-    // const intentdconfirm = await stripe.paymentIntents.confirm("pi_3N8guxGvTPkBaR2v1JaC3DXR", { payment_method: "pm_card_visa" });
-    const intentdconfirm = await stripe.setupIntents.confirm(req.body.id, {
-      payment_method: 'pm_card_visa',
-    });
+    const intentdconfirm = await stripe.setupIntents.confirm(req.body.id, { payment_method: "pm_card_visa" });
     res.status(200).json({
       success: true,
       intentdconfirms: intentdconfirm,
@@ -73,6 +70,25 @@ app.post('/intentdconfirm', async (req, res, next) => {
     next(err);
   }
 });
+app.post("/token", async (req, res, next) => {
+  try {
+    const tokenResult = await stripe.tokens.create({
+      card: {
+        number: "4242424242424242",
+        exp_month: 5,
+        exp_year: 2024,
+        cvc: "314",
+      },
+    });
+    res.status(200).json({
+      success: true,
+      tokenResult: tokenResult,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 
 app.post('/cretePaymentMethod', async (req, res, next) => {
   console.log(req.body);
