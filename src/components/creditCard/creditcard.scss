@@ -5,12 +5,12 @@
   padding: 20px 0px 20px;
   input {
     padding-left: 55px;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 16px;
     line-height: 20px;
     color: #979ab8 !important;
     &::placeholder {
-      font-weight: 500;
+      font-weight: 400;
       font-size: 16px;
       line-height: 20px;
       color: #979ab8 !important;
@@ -42,12 +42,21 @@
 }
 .card__content {
   padding: 20px 20px 0px;
+  .input-error-text-mod {
+    margin: -20px 0px 15px !important;
+    color: var(--color-error) !important;
+  }
 }
 .card__content-datecode {
   display: flex;
 }
-.card__content-date {
+.card__content-date,.card__content-code {
   margin-right: 20px;
+  .input-error-text-date {
+    margin-top: 10px !important;
+    margin-left: -53px !important;
+    color: var(--color-error) !important;
+  }
 }
 
 .card__content-number,
@@ -55,9 +64,7 @@
   margin-bottom: 20px;
 }
 .card__content-number,
-.card__content-name,
-.card__content-code,
-.card__content-date {
+.card__content-name {
   position: relative;
   img {
     position: absolute;
@@ -67,19 +74,24 @@
 }
 .card__content-code,
 .card__content-date {
+  width: 287px;
+  position: relative;
+  img {
+    position: absolute;
+    top: 12px;
+    left: 20px;
+  }
+}
+.card__content-number,
+.card__content-code,
+.card__content-date {
   height: 46px;
-  width: 200px;
-  border: 1px solid black;
+  border: 1px solid #ebecf3;
+  border-radius: 12px;
+  background-color: #fff;
+  padding: 13px 10px 13px 55px;
 }
 .card__content-number {
-  height: 46px;
-  border: 1px solid black;
-  div {
-    height: 100% !important;
-  }
-  input {
-    height: 100% !important;
-  }
   .card-type-img {
     width: 25px;
     height: 20px;
@@ -95,6 +107,10 @@
     .card__content-date {
       margin-right: 0px;
       margin-bottom: 20px;
+    }
+    .card__content-code,
+    .card__content-date {
+      width: 100%;
     }
   }
 }

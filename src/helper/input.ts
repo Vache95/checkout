@@ -1,5 +1,3 @@
-
-
 // card input text uppercase----------------------------------------------------------------------------------------------------------
 export const CardNameValues = (e: React.MouseEvent<HTMLElement>) => {
   const target = e.target as HTMLInputElement;
