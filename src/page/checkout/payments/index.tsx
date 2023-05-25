@@ -1,6 +1,7 @@
 import { FC, FormEvent, useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CreditCard from 'components/creditCard';
 import Buttons from 'components/formElements/button';
 import Input from 'components/formElements/input';
@@ -30,6 +31,8 @@ const Payments: FC = (): JSX.Element => {
 	const [paymentRequest, setPaymentRequest] = useState(null);
 	const { data: cart } = useReactQuery(() => getCarts(), 'carts');
 	const { setAlert }: any = useExpensesData();
+	const { state } = useLocation();
+	const navigate = useNavigate();
 
 	const stripe: any = useStripe();
 	const elements = useElements();
@@ -77,6 +80,11 @@ const Payments: FC = (): JSX.Element => {
 		}
 	}, [stripe]);
 
+	useEffect(() => {
+		if (!state) {
+			navigate('/');
+		}
+	}, []);
 	const intentRequst = (): void => {
 		fetch('http://localhost:5001/intentd', {
 			method: 'POST',

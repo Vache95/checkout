@@ -15,7 +15,8 @@ const Home: FC = (): JSX.Element => {
 	const { data: cart } = useReactQuery(() => getCarts(), 'carts');
 	const filterCart = cart?.filter((e: any) => (+e.count > 0 ? e : null));
 
-	const pageInformation = (): void => navigate(`${CHECKOUT}/${INFORMATION}`);
+	const pageInformation = (): void =>
+		navigate(`${CHECKOUT}/${INFORMATION}`, { state: 'information' });
 
 	return (
 		<div className='home'>

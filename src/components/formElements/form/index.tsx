@@ -1,8 +1,8 @@
-import { FC, FormEvent, useState } from 'react';
+import { FC, FormEvent, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { emailPattern, namePattern, phonePattern } from 'utils/validation';
 import Phone from 'assets/svg/fi-rr-phone-call.svg';
 import User from 'assets/svg/fi-rr-user.svg';
@@ -33,6 +33,7 @@ interface FormData {
 
 const Forms: FC = (): JSX.Element => {
 	const [values, setValues] = useState<string>('');
+	const { state } = useLocation();
 	const { setinformation }: any = useExpensesData();
 	const navigate = useNavigate();
 
@@ -47,7 +48,11 @@ const Forms: FC = (): JSX.Element => {
 		navigate(`/${CHECKOUT}/${PAYMENT}`);
 	};
 	const phoneNumber = (e: FormEvent<HTMLInputElement>): void => setValues(InputNumber(e));
-
+	useEffect(() => {
+		if (!state) {
+			navigate('/');
+		}
+	}, []);
 	return (
 		<div className='form'>
 			<form onSubmit={handleSubmit(onSubmit)}>

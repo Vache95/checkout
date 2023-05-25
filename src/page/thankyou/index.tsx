@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Cart from 'components/cart';
 import Buttons from 'components/formElements/button';
 import ShowSummary from 'components/showsummary';
@@ -11,9 +11,13 @@ import { HOME } from 'constant';
 
 const ThankYou: FC = (): JSX.Element => {
 	const navigate = useNavigate();
-
+	const { state } = useLocation();
 	const back = (): void => navigate(HOME);
-
+	useEffect(() => {
+		if (!state) {
+			navigate('/');
+		}
+	}, []);
 	return (
 		<div className='thank'>
 			<div className='thank__container'>
