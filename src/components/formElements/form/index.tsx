@@ -45,7 +45,7 @@ const Forms: FC = (): JSX.Element => {
 
 	const onSubmit = (data: FormData) => {
 		setinformation(data);
-		navigate(`/${CHECKOUT}/${PAYMENT}`);
+		navigate(`/${CHECKOUT}/${PAYMENT}`, { state: 'payment' });
 	};
 	const phoneNumber = (e: FormEvent<HTMLInputElement>): void => setValues(InputNumber(e));
 	useEffect(() => {

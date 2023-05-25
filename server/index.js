@@ -104,8 +104,8 @@ app.post('/cretePaymentMethod', async (req, res, next) => {
 
 app.post('/paymentMethod', async (req, res, next) => {
 	try {
-		const paymentMethod = await stripe.paymentMethods.attach(eq.body.id, {
-			customer: eq.body.customer,
+		const paymentMethod = await stripe.paymentMethods.attach(req.body.id, {
+			customer: req.body.customer,
 		});
 
 		res.status(200).json({
