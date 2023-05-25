@@ -22,6 +22,18 @@
   width: 100%;
   height: 80px;
 }
+@media (max-width: 1093px) {
+  .information__leftside {
+    max-width: 585px;
+  width: 100%;
+  }
+}
+@media (max-width: 1040px) {
+  .information__leftside {
+    max-width: 535px;
+  width: 100%;
+  }
+}
 @media (max-width: 1110px) {
   .information__leftside {
     margin-right: 15px;
