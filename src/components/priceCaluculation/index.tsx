@@ -26,7 +26,6 @@ const PriceCalculation: FC = (): JSX.Element => {
 		() => updateCart(state, countProducts),
 		'carts'
 	);
-	
 
 	return (
 		<div className='price'>

@@ -48,11 +48,13 @@ const Forms: FC = (): JSX.Element => {
 		navigate(`/${CHECKOUT}/${PAYMENT}`, { state: 'payment' });
 	};
 	const phoneNumber = (e: FormEvent<HTMLInputElement>): void => setValues(InputNumber(e));
+
 	useEffect(() => {
 		if (!state) {
 			navigate('/');
 		}
 	}, []);
+
 	return (
 		<div className='form'>
 			<form onSubmit={handleSubmit(onSubmit)}>

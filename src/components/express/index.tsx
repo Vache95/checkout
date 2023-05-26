@@ -1,24 +1,23 @@
 import PayPalPayment from 'components/PayPalPayment';
-import PayPal from 'assets/buttons//580b57fcd9996e24bc43c530.png';
+import { getCarts } from 'services/products';
 import Shop from 'assets/buttons/ShopPay - White 1.png';
 import Pay from 'assets/buttons/svgexport-1 (7) 1.png';
 import './express.scss';
 
-import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
-
+import { useReactQuery } from 'hook/useQuery';
 const Express: React.FC = (): JSX.Element => {
-	const paypal_s: any = {
-		layout: 'horizontal',
-		height: 49, // Change the button height
-		width: 180, // Change the button width
-	};
-	const initialOptions = {
-		'client-id': 'ARW7-CHqJjULlbAMGsb9WWgS-VJxpypPpeG27MTYJmB_uR0aJqMf2VwWvPhoMpM1Sxw0FRQSfcfzmEIn',
-		currency: 'USD',
-		intent: 'capture',
-		// 'data-client-token': 'abc123xyz==',
-	};
+	const { data: cart } = useReactQuery(() => getCarts(), 'carts');
 
+	const price: any = cart
+		?.map((e: any) => {
+			if (+e?.count > 0) {
+				const price = e?.price?.slice(1);
+				const mutationPrice = +price * e?.count;
+				return mutationPrice;
+			}
+			return 0;
+		})
+		?.reduce((a: number, b: number) => a + b, 0);
 	return (
 		<div className='express'>
 			<h3 className='express__text'>Express Checkout</h3>
@@ -28,11 +27,7 @@ const Express: React.FC = (): JSX.Element => {
 						<img src={Shop} alt='shop' />
 					</div>
 					<div className='express__button-paypal'>
-						{/* <img src={PayPal} alt='paypal' /> */}
-						<PayPalScriptProvider options={initialOptions}>
-							<PayPalButtons style={paypal_s} />
-							{/* <PayPalPayment /> */}
-						</PayPalScriptProvider>
+						<PayPalPayment price={price} />
 					</div>
 				</div>
 				<div className='express__button-pay'>

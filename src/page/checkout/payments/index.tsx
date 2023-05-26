@@ -72,7 +72,6 @@ const Payments: FC = (): JSX.Element => {
 			pr.canMakePayment()
 				.then((result: any) => {
 					if (result) {
-						console.log(result);
 						setPaymentRequest(pr);
 					}
 				})
@@ -85,6 +84,7 @@ const Payments: FC = (): JSX.Element => {
 			navigate('/');
 		}
 	}, []);
+
 	const intentRequst = (): void => {
 		fetch('http://localhost:5001/intentd', {
 			method: 'POST',
@@ -126,18 +126,42 @@ const Payments: FC = (): JSX.Element => {
 			console.log(e, 'error');
 		}
 	};
-	const paymentConfirm = (updatedPaymentIntent: any) => {
-		stripe.confirmPayment({
-			clientSecret: updatedPaymentIntent.client_secret,
-			confirmParams: {
-				return_url: `http://localhost:3000/${THANK_YOU}`,
-			},
-		});
+	const paymentConfirm = async (updatedPaymentIntent: any) => {
+		try {
+			stripe.confirmPayment({
+				clientSecret: updatedPaymentIntent.client_secret,
+				confirmParams: {
+					// return_url: `http://localhost:3000/${THANK_YOU}`,
+				},
+			});
+			navigate(`/${THANK_YOU}`, { state: 'tankyou' });
+		} catch {
+			console.log('error');
+		}
 	};
 
 	const onSubmit = async (data: FormData) => {
 		setLoading(true);
 		intentRequst();
+		// fetch('/webhook', {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 	},
+		// 	body: JSON.stringify({
+		// 		/* payload data */
+		// 	}),
+		// })
+		// 	.then(response => {
+		// 		if (response.ok) {
+		// 			console.log('Webhook request successful');
+		// 		} else {
+		// 			console.error('Webhook request failed');
+		// 		}
+		// 	})
+		// 	.catch(error => {
+		// 		console.error('error');
+		// 	});
 	};
 
 	const openOption = (e: FormEvent<HTMLInputElement>): void => {

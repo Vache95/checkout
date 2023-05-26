@@ -21,3 +21,15 @@ export interface FormData {
 	carddate: string;
 	cardcode: string;
 }
+
+export interface PayPalStayl {
+	layout?: 'horizontal' | undefined;
+	height?: number | undefined;
+	width?: number | undefined;
+}
+
+export interface InititalOptions {
+	'client-id': any;
+	currency: string;
+	intent: string;
+}

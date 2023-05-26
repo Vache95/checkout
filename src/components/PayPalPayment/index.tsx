@@ -1,48 +1,68 @@
-import { FC } from 'react';
-import React from 'react';
-import ReactDOM from 'react-dom';
-// const PayPalButton: any = window?.paypal?.Buttons?.driver('react', { React, ReactDOM });
+import { FC, useState } from 'react';
 
-const PayPalPayment: FC = (): JSX.Element => {
-	const createOrder = (data: any) => {
-		// Order is created on the server and the order id is returned
-		return fetch('/my-server/create-paypal-order', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			// use the "body" param to optionally pass additional order information
-			// like product skus and quantities
-			body: JSON.stringify({
-				cart: [
-					{
-						sku: 'YOUR_PRODUCT_STOCK_KEEPING_UNIT',
-						quantity: 'YOUR_PRODUCT_QUANTITY',
-					},
-				],
-			}),
-		})
-			.then(response => response.json())
-			.then(order => order.id);
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
+import { InititalOptions, PayPalStayl } from '@types';
+
+type PaypalProps = {
+	price: number;
+};
+
+const PayPalPayment: FC<PaypalProps> = ({ price }): JSX.Element => {
+	const [paidFor, setPaidFor] = useState<boolean>(false);
+	const [error, setError] = useState<any>('');
+
+	const paypal_s: PayPalStayl = {
+		layout: 'horizontal',
+		height: 49,
+		width: 180,
 	};
-	const onApprove = (data: any) => {
-		// Order is captured on the server and the response is returned to the browser
-		return fetch('/my-server/capture-paypal-order', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				orderID: data.orderID,
-			}),
-		}).then(response => response.json());
+	const initialOptions: InititalOptions = {
+		'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID,
+		currency: 'USD',
+		intent: 'capture',
+		// 'data-client-token': 'abc123xyz==',
 	};
+
+	const handleApprove = (orderId: any) => {
+		setPaidFor(true);
+	};
+	if (paidFor) {
+		alert('success');
+	}
+	if (error) {
+		alert('error');
+	}
+
 	return (
 		<>
-			{/* <PayPalButton
-				createOrder={data => createOrder(data, actions)}
-				onApprove={data => onApprove(data, actions)}
-			/> */}
+			<PayPalScriptProvider options={initialOptions}>
+				<PayPalButtons
+					style={paypal_s}
+					createOrder={(data, actions) => {
+						return actions.order.create({
+							purchase_units: [
+								{
+									amount: {
+										value: `${price}`,
+									},
+								},
+							],
+						});
+					}}
+					onApprove={async (data, actions) => {
+						return actions?.order?.capture().then(details => {
+							const name = details?.payer?.name?.given_name;
+							alert(`Transaction completed by ${name}`);
+							handleApprove(data.orderID);
+						});
+					}}
+					onCancel={() => {}}
+					onError={err => {
+						setError(err);
+						console.error('error paypal', err);
+					}}
+				/>
+			</PayPalScriptProvider>
 		</>
 	);
 };

@@ -62,7 +62,7 @@
       "images": "https://wallpaperaccess.com/full/3963370.jpg",
       "price": "€69",
       "name": "Nike sneakers",
-      "count": "0"
+      "count": ""
     },
     {
       "id": "2",
@@ -70,7 +70,7 @@
       "code": "2222",
       "price": "€79",
       "name": "Puma sneakers",
-      "count": "1"
+      "count": ""
     },
     {
       "id": "3",
@@ -78,7 +78,7 @@
       "code": "3333",
       "price": "€29",
       "name": "Adidas sneakers",
-      "count": "1"
+      "count": ""
     },
     {
       "id": "4",
@@ -86,7 +86,7 @@
       "code": "4444",
       "price": "€29",
       "name": "Adidas sneakers",
-      "count": "1"
+      "count": ""
     },
     {
       "id": "5",
@@ -110,7 +110,7 @@
       "code": "7777",
       "price": "€29",
       "name": "Adidas sneakers",
-      "count": "1"
+      "count": ""
     }
   ],
   "cupon": [

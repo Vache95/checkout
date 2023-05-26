@@ -2,9 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const stripe = require('stripe')(
-	'sk_test_51N6E82GvTPkBaR2vkZmyQQusAAR5y9XtBGRgl6HcqI9pUcgzlenzMU2plCKBNtS2HjQAeiuECjShfcW6YlsH6Wks00aeOGMOqr'
-);
+const stripe = require('stripe')(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const port = 5001;
 
@@ -130,36 +128,33 @@ app.post('/paymentMethodconfirm', async (req, res, next) => {
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
-// app.post("/webhook", bodyParser.raw({ type: "application/json" }), (req, res) => {
-// 	const sig = req.headers['stripe-signature'];
+// const endpointSecret = `${process.env.REACT_APP_STRIPE_WEBHOOK_KEY}`;
+
+// app.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
+// 	const sig = request.headers['stripe-signature'];
+
 // 	let event;
-//
+
 // 	try {
-// 		event = stripe.webhooks.constructEvent(req.body, sig, process.env.WEBHOOK_SECRET);
-// 	} catch (e) {
-// 		console.log('error message', e.message);
-// 		return res.status(400).send(`webhook error: ${e.message}`)
+// 		event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+// 	} catch (err) {
+// 		response.status(400).send(`Webhook Error: ${err.message}`);
+// 		return;
 // 	}
-//
-// 	if (event.type === 'payment_intent.created') {
-// 		const paymentIntent = event.data.object;
-// 		console.log(`[${event.id}] payment intent (PaymentIntent) [${paymentIntent.id}]: ${paymentIntent.status} created!`);
+
+// 	// Handle the event
+// 	switch (event.type) {
+// 		case 'payment_intent.succeeded':
+// 			const paymentIntentSucceeded = event.data.object;
+// 			// Then define and call a function to handle the event payment_intent.succeeded
+// 			break;
+// 		// ... handle other event types
+// 		default:
+// 			console.log(`Unhandled event type ${event.type}`);
 // 	}
-// 	if (event.type === 'payment_intent.canceled') {
-// 		console.log(`payment intent (PaymentIntent) canceled!`);
-// 	}
-// 	if (event.type === 'payment_intent.payment_failed') {
-// 		console.log(`payment intent (PaymentIntent) payment_failed!`);
-// 	}
-// 	if (event.type === 'payment_intent.processing') {
-// 		console.log(`payment intent (PaymentIntent) processing!`);
-// 	}
-// 	if (event.type === 'payment_intent.requires_action') {
-// 		console.log(`payment intent (PaymentIntent) requires_action!`);
-// 	}
-// 	if (event.type === 'payment_intent.succeeded') {
-// 		console.log(`payment intent (PaymentIntent) succeeded!`);
-// 	}
-//
-// 	res.json({ received: true });
-// })
+
+// 	// Return a 200 response to acknowledge receipt of the event
+// 	response.send();
+// });
+
+// app.listen(4242, () => console.log('Running on port 4242'));
