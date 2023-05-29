@@ -61,7 +61,7 @@ const Payments: FC = (): JSX.Element => {
 				currency: 'usd',
 				total: {
 					label: 'Demo total',
-					amount: total ? total : 111111,
+					amount: 111111,
 				},
 				disableWallets: ['link'],
 				requestPayerName: true,
@@ -86,10 +86,10 @@ const Payments: FC = (): JSX.Element => {
 	}, []);
 
 	const intentRequst = (): void => {
-		fetch('http://localhost:5001/intentd', {
+		fetch('http://localhost:5000/intentd', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ amount: total ? total : 111111 }),
+			body: JSON.stringify({ amount: 111111 }),
 		})
 			.then(r => r.json())
 			.then(response => {

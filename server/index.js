@@ -2,9 +2,11 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const stripe = require('stripe')(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+const stripe = require('stripe')(
+	'sk_test_51N6E82GvTPkBaR2vkZmyQQusAAR5y9XtBGRgl6HcqI9pUcgzlenzMU2plCKBNtS2HjQAeiuECjShfcW6YlsH6Wks00aeOGMOqr'
+);
 
-const port = 5001;
+const port = 5000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
